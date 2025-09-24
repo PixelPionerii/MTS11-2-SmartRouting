@@ -5,13 +5,23 @@ import Login from "../../components/login/Login";
 export default function AgentAdminLogin() {
     const loginRef = useRef(null);
 
+    function handleClick(event) {
+        event.preventDefault();
+        
+        if (loginRef.current.isFormCorrect()) {
+            console.log(loginRef.current.getLoginFormData());
+        } else {
+            console.log("Form has errors");
+        }
+    }
+
     return (
         <>
         <div className="d-flex flex-column align-items-center">
             <Login ref={loginRef} />
             <Button
                 className="mt-2"
-                onClick={() => console.log(loginRef.current.getLoginFormData())}
+                onClick={handleClick}
                 variant="primary"
             >
                 Login
