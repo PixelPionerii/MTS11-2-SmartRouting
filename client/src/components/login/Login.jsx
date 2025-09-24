@@ -1,25 +1,24 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 function Login(props, ref) {
-    const [loginData, setLoginData] = useState({
-        formData: {
-            email: "",
-            password: "",
-        },
-        errorData: {
-            email: "",
-            password: "",
-        },
-        state: {
-            email: "",
-            password: "",
-        }
+    const [emailData, setEmailData] = useState({
+        value: "",
+        error: "",
+        state: ""
     });
-    const [errorData, setErrorData] = useState({
-    })
+
+    const [passwordData, setPasswordData] = useState({
+        value: "",
+        error: "",
+        state: ""
+    });
 
     useImperativeHandle(ref, () => ({
-        getLoginFormData: () => loginData
+        getLoginFormData: () => ({
+            email: emailData.value,
+            password: passwordData.value,
+        }),
+        isFormCorrect: () => emailData.error === "" && passwordData.error === ""
     }));
 
     function handleChange(event) {
@@ -28,20 +27,36 @@ function Login(props, ref) {
         switch (id) {
             case "email":
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    setErrorData(prev => ({ ...prev, emailError: "Invalid Email" }));
+                    setEmailData(prev => ({ 
+                        ...prev, 
+                        value: value.trim(),
+                        error: "Invalid Email" 
+                    }));
                 } else {
-                    setErrorData(prev => ({ ...prev, emailError: "" }));
+                    setEmailData(prev => ({ 
+                        ...prev, 
+                        value: value.trim(),
+                        error: "" 
+                    }));
                 }
-                setLoginData(prev => ({ ...prev, email: value.trim() }));
                 break;
+            
             case "password":
                 if (value.length < 8) {
-                    setErrorData(prev => ({ ...prev, passwordError: "Password must be at lease 8 characters long" }));
+                    setPasswordData(prev => ({ 
+                        ...prev, 
+                        value: value.trim(),
+                        error: "Password must be at least 8 characters long" 
+                    }));
                 } else {
-                    setErrorData(prev => ({ ...prev, passwordError: "" }));
+                    setPasswordData(prev => ({ 
+                        ...prev, 
+                        value: value.trim(),
+                        error: "" 
+                    }));
                 }
-                setLoginData(prev => ({ ...prev, password: value.trim() }));
                 break;
+            
             default:
                 return;
         }
@@ -52,22 +67,26 @@ function Login(props, ref) {
         <form>
             <div className="d-flex flex-column align-items-center">
                 <label id="label-login"></label>
+                
                 <input
                     className="mt-2"
                     id="email"
+                    type="email"
                     onChange={handleChange}
                     placeholder="Email"
-                    value={loginData.email}
+                    value={emailData.value}
                 />
-                {errorData.emailError && <span className="small text-danger">{errorData.emailError}</span>}
+                {emailData.error && <span className="small text-danger">{emailData.error}</span>}
+                
                 <input
                     className="mt-2"
                     id="password"
+                    type="password"
                     onChange={handleChange}
                     placeholder="Password"
-                    value={loginData.password}
+                    value={passwordData.value}
                 />
-                {errorData.passwordError && <span className="small text-danger">{errorData.passwordError}</span>}
+                {passwordData.error && <span className="small text-danger">{passwordData.error}</span>}
             </div>
         </form>
         </>
