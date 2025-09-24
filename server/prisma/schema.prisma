@@ -55,6 +55,7 @@ model Request {
   rating      Float?
   customerId  Int
   agentID     Int?
+  mappingReason String?
 
   customer    Customer        @relation(fields: [customerId], references: [id])
   agent       Agent?          @relation(fields: [agentID], references: [id]) // optional

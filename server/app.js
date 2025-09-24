@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const customerRoutes = require('./routes/customerRoutes');
+const agentRoutes = require('./routes/agentRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 require('dotenv').config();
 
@@ -11,6 +13,8 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/customer', customerRoutes);
+app.use('/api/agent', agentRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/',(req,res) => {
     res.send("Hello world")

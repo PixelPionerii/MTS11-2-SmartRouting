@@ -19,19 +19,4 @@ const generativeModel = vertexAI.getGenerativeModel({
     },
 });
 
-const chat = generativeModel.startChat();
-
-chat.sendMessage("nan than da leo").then((result) => {
-    
-    const content = result.response?.candidates?.[0]?.content;
-    let textReply = "";
-    if (content) {
-        if (Array.isArray(content)) {
-            textReply = content.map((c) => (c.parts ? c.parts.map((p) => p.text).join(" ") : c.text)).join(" ");
-        } else if (content.parts) {
-            textReply = content.parts.map((p) => p.text).join(" ");
-        }
-    }
-    console.log(textReply)
-});
-    
+module.exports = generativeModel

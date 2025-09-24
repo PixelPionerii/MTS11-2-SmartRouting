@@ -34,6 +34,52 @@ async function main() {
         },
     });
     console.log('Admin agent created.');
+
+    await prisma.agent.createMany({
+        data: [
+            {
+                name: "Alice Johnson",
+                email: "alice.johnson@example.com",
+                languagesKnown: ["English", "Hindi"],
+                password: "password123", // you should hash passwords in production
+                availability: true,
+                skills: ["Billing", "Customer Support"],
+                isAdmin: false,
+                currentWorkload: 2,
+                phoneNo: "123-456-7890",
+                issueResolvedCount: 10,
+                totalRating: 4.5,
+            },
+            {
+                name: "Bob Smith",
+                email: "bob.smith@example.com",
+                languagesKnown: ["English"],
+                password: "password456",
+                availability: false,
+                skills: ["Technical Support"],
+                isAdmin: false,
+                currentWorkload: 5,
+                phoneNo: "987-654-3210",
+                issueResolvedCount: 20,
+                totalRating: 4.8,
+            },
+            {
+                name: "Charlie Admin",
+                email: "charlie.admin@example.com",
+                languagesKnown: ["English"],
+                password: "adminpass",
+                availability: true,
+                skills: ["Admin Management"],
+                isAdmin: true,
+                currentWorkload: 0,
+                phoneNo: "555-555-5555",
+                issueResolvedCount: 50,
+                totalRating: 5.0,
+            }
+        ],
+    });
+
+    console.log('Sample agents have been added.');
 }
 
 main()
