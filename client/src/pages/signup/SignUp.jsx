@@ -21,7 +21,7 @@ function Input({ changeFn, inputFor, value, error }) {
     );
 }
 
-export default function SignUp() {
+function SignUp() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -173,3 +173,5 @@ export default function SignUp() {
         </>
     );
 }
+
+export default SignUp;
