@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RequestStatus {
+  OPEN
+  CLOSE
+}
+
+model Customer {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  language  String
+  tier      String
+  password  String
+  phoneNo   String
+  requests  Request[]
+}
+
+model Agent {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  email               String    @unique
+  languagesKnown      String[]
+  password            String
+  availability        Boolean   @default(true)
+  skills              String[]
+  isAdmin             Boolean
+  currentWorkload     Int       @default(0)
+  phoneNo             String
+  issueResolvedCount  Int       @default(0)
+  totalRating         Float     @default(0.0)
+  requests            Request[]
+}
+
+model Request {
+  id          Int             @id @default(autoincrement())
+  description String
+  type        String?
+  priority    String
+  status      RequestStatus   // Enum for 'OPEN' and 'CLOSE'
+  rating      Float?
+  customerId  Int
+  agentID     Int?
+
+  customer    Customer        @relation(fields: [customerId], references: [id])
+  agent       Agent?          @relation(fields: [agentID], references: [id]) // optional
+}
+
+model Prompt {
+  id        Int     @id @default(autoincrement())
+  promptId  String  @unique
+  prompt    String
+}
+
+// npx prisma migrate dev --name custom-name (not needed untill you are changing the DB)
+// npx prisma generate
+// npx prisma db seed
