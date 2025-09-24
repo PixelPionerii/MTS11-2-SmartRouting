@@ -2,12 +2,12 @@ import React, { useRef } from "react";
 import { Button } from "react-bootstrap";
 import Login from "../../components/login/Login";
 
-export default function AgentAdminLogin() {
+function AgentAdminLogin() {
     const loginRef = useRef(null);
 
     function handleClick(event) {
         event.preventDefault();
-        
+
         if (loginRef.current.isFormCorrect()) {
             console.log(loginRef.current.getLoginFormData());
         } else {
@@ -30,3 +30,5 @@ export default function AgentAdminLogin() {
         </>
     );
 }
+
+export default AgentAdminLogin;
