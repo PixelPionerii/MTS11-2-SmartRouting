@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
+import axiosInstance from "../../api/axiosInstance";
+import { useNavigate } from "react-router";
 
 function Input({ changeFn, inputFor, value, error }) {
     const inputId = inputFor.toLowerCase().replace(" ", "-");
@@ -22,10 +24,14 @@ function Input({ changeFn, inputFor, value, error }) {
 }
 
 function SignUp() {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         phone: "",
+        tier: "silver",
+        language: "en",
         password: "",
         confirmPassword: ""
     });
@@ -35,8 +41,10 @@ function SignUp() {
         email: "",
         phone: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
     });
+
+    const [apiError, setApiError] = useState("");
 
     function handleChange(event) {
         const { id, value } = event.target;
@@ -76,6 +84,11 @@ function SignUp() {
                 }
                 setFormData(prev => ({ ...prev, phone: filteredPhoneValue }));
                 break;
+
+            case "tier":
+            case "language":
+                setFormData(prev => ({ ...prev, [id]: value }));
+                break;
             
             case "password":
                 if (value.length < 8) {
@@ -105,6 +118,11 @@ function SignUp() {
                         ...prev, 
                         confirmPassword: "Passwords do not match" 
                     }));
+                } else {
+                    setFormErrorData(prev => ({ 
+                        ...prev, 
+                        confirmPassword: "" 
+                    }));
                 }
                 setFormData(prev => ({ ...prev, confirmPassword: value.trim() }));
                 break;
@@ -114,8 +132,9 @@ function SignUp() {
         }
     }
     
-    function handleClick(event) {
+    async function handleClick(event) {        
         event.preventDefault();
+        setApiError("");
         
         const hasErrors = Object.values(formErrorData).some(error => error !== "");
         if (hasErrors) {
@@ -128,8 +147,30 @@ function SignUp() {
             console.log("Fill all the fields");
             return;
         }
-        
-        console.log(formData);
+
+        try {
+            const data = {
+                name: formData.name,
+                email: formData.email, 
+                password: formData.password, 
+                language: formData.language, 
+                tier: formData.tier, 
+                phoneNo: formData.phone
+            };
+            
+            const response = await axiosInstance.post(
+                "/api/auth/customer/signup",
+                data
+            );
+    
+            if (response.status === 201) {
+                navigate("/login");
+            } else {
+                setApiError("Error Signing up the user")
+            }
+        } catch (error) {
+            setApiError(error.response.data.error);
+        }        
     }
 
     return (
@@ -155,6 +196,26 @@ function SignUp() {
                     value={formData.phone}
                     error={formErrorData.phone}
                 />
+                <select
+                    className="m-2"
+                    id="tier"
+                    onChange={handleChange}
+                    value={formData.tier}
+                >
+                    <option value="silver">Silver</option>
+                    <option value="gold">Gold</option>
+                    <option value="platinum">Platinum</option>
+                </select>
+                <select
+                    className="m-2"
+                    id="language"
+                    onChange={handleChange}
+                    value={formData.language}
+                >
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="fr">French</option>
+                </select>
                 <Input 
                     inputFor="Password" 
                     changeFn={handleChange}
@@ -167,7 +228,14 @@ function SignUp() {
                     value={formData.confirmPassword}
                     error={formErrorData.confirmPassword}
                 />
-                <Button variant="primary" onClick={handleClick}>Sign Up</Button>
+                {apiError && <span className="small text-danger">{apiError}</span>}
+                <Button 
+                    className="mt-2" 
+                    onClick={handleClick}
+                    variant="primary" 
+                >
+                    Sign Up
+                </Button>
             </div>
         </form>
         </>

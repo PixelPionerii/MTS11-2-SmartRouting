@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import axiosInstance from "../../api/axiosInstance";
 import Login from "../../components/login/Login";
 
-function AgentAdminLogin() {
+function UserLogin() {
     const loginRef = useRef(null);
     const navigate = useNavigate();
     const [formError, setFormError] = useState("");
@@ -21,12 +21,12 @@ function AgentAdminLogin() {
         try {
             const data = loginRef.current.getLoginFormData();
             const response = await axiosInstance.post(
-                "/api/auth/agent/login",
+                "/api/auth/customer/login",
                 data,
             );
 
             if (response.status === 200) {
-                navigate("/dashboard");
+                navigate("/");
             } else {
                 setFormError("Error logging in");
             }
@@ -38,7 +38,7 @@ function AgentAdminLogin() {
     return (
         <>
         <div className="d-flex flex-column align-items-center">
-            <p className="m-0">Admin Login</p>
+            <p className="m-0">Customer Login</p>
             <Login ref={loginRef} />
             {formError && <span className="small text-danger mt-2">{formError}</span>}
             <Button
@@ -53,4 +53,4 @@ function AgentAdminLogin() {
     );
 }
 
-export default AgentAdminLogin;
+export default UserLogin;

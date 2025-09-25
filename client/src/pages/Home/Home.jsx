@@ -4,7 +4,7 @@ import Requests from "../../components/requests/Requests";
 
 import "./Home.css";
 
-const mockRequests = [
+export const mockRequests = [
     { title: "Segmentation fault", status: "open", details: "" },
     { title: "Stack overflow", status: "closed", details: "" },
     { title: "Ctrl^c", status: "open", details: "" },
