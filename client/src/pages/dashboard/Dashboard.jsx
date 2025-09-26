@@ -1,24 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import AdminDashboard from "../../components/admin/adminDashboard/AdminDashboard";
 import AgentDashboard from "../../components/agentDashboard/AgentDashboard";
 import CustomerDashboard from "../../components/customerDashboard/CustomerDashboard";
+import { useNavigate } from "react-router";
 
-import { mockRequests } from "../../components/customerDashboard/CustomerDashboard";
 
 function GetDashboard() {
-    let creds = localStorage.getItem("creds");
-    creds = JSON.parse(creds);
-
-    if (creds.role === "customer") {
+    const navigate = useNavigate();
+    const [role, setRole] = useState("")
+    
+    useEffect(() => {
+        let creds = localStorage.getItem("creds");
+        creds = JSON.parse(creds);   
+        try { 
+            if(!creds || !creds.role || !creds.token){
+                navigate('/')
+            }
+    
+            setRole(creds.role)
+        } catch (error) {
+            navigate('/')
+        }
+    }, []);
+    
+    if (role === "customer") {
         return <CustomerDashboard />;
-    } else if (creds.role === "admin") {
+    } else if (role === "admin") {
         return <AdminDashboard />;
-    } else if (creds.role === "agent") {
-        return <AgentDashboard requests={mockRequests} />;
+    } else if (role === "agent") {
+        return <AgentDashboard />;
     }
-
-    return <><p>Something unexpected happened...</p></>
 }
 
 function Dashboard() {

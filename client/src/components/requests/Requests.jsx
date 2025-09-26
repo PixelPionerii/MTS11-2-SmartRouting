@@ -5,49 +5,45 @@ import "./Requests.css";
 
 function Request({ request }) {
     if (typeof request !== "object") return;
-    
+
     return (
-        <>
-        <div className="d-flex align-items-center justify-content-between request my-2 p-2">
-            <p className="m-0">{request.title}</p>
+        <div key={request.id} className="d-flex align-items-center justify-content-between request my-2 p-2">
             <div>
-                {request.status === "open" && <Button className="mx-1 request-btn">X</Button>}
-                <Button className="mx-1 request-btn">!</Button>
+                <div>description: {request.description}</div>
+                <div>priority: {request.priority}</div>
+                <div>request type: {request.type}</div>
+            </div>
+            <div>
+                {request.status === "OPEN" && <Button>close</Button>}
             </div>
         </div>
-        </>
     );
 }
 
 function RequestSection({ requests, sectionStatus, sectionTitle }) {
     return (
-        <div className="p-0">
-            <h6 className="m-0">{sectionTitle}</h6>
-            {requests.map(request => {
-                if (request.status === sectionStatus) {
-                    return <Request key={request.title} request={request} />
-                }
-                return null;
-            })}
+        <div>
+            <h6>{sectionTitle}</h6>
+            {requests.map(request => 
+                <Request key={request.id} request={request} />
+            )}
         </div>
     );
 }
 
 function Requests({ requests }) {
-    if (!requests || !Array.isArray(requests) || requests.length <= 0) return;
-
     return (
         <>
-        <RequestSection
-            requests={requests}
-            sectionStatus="open"
-            sectionTitle="Open Requests"
-        />
-        <RequestSection
-            requests={requests}
-            sectionStatus="closed"
-            sectionTitle="Closed Requests"
-        />
+            <RequestSection
+                requests={requests.openRequests}
+                sectionStatus="open"
+                sectionTitle="Open Requests"
+            />
+            <RequestSection
+                requests={requests.closedRequests}
+                sectionStatus="closed"
+                sectionTitle="Closed Requests"
+            />
         </>
     );
 }

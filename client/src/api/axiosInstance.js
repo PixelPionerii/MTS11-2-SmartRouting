@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 async function getConfig() {
     const prodUrl = "https://api.pixel.pioneers.smartrouting.com";
@@ -27,14 +28,24 @@ async function getConfig() {
     }
 }
 
+function getToken() {
+    console.log()
+    try {
+        const creds = JSON.parse(localStorage.getItem('creds'))
+        return creds.token   
+    } catch (error) {
+        return ''
+    }
+}
+
 const config = await getConfig();
 
 const axiosInstance = axios.create({
   baseURL: config.backendApiUrl,
   headers: {
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   },
   timeout: 50000,
 });
 
-export default axiosInstance;
+export { getToken, axiosInstance }

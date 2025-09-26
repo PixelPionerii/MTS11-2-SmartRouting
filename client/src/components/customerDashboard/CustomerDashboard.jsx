@@ -1,20 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Requests from "../../components/requests/Requests";
+import { axiosInstance, getToken } from "../../api/axiosInstance";
 
 import "./CustomerDashboard.css";
-
-export const mockRequests = [
-    { title: "Segmentation fault", status: "open", details: "" },
-    { title: "Stack overflow", status: "closed", details: "" },
-    { title: "Ctrl^c", status: "open", details: "" },
-    { title: "Null pointer", status: "open", details: "" },
-    { title: "Out of memory", status: "closed", details: "" },
-]
+import { useNavigate } from "react-router";
 
 const CustomerDashboard = () => {
     const [query, setQuery] = useState("");
     const [priority, setPriority] = useState("");
+    const [requestData,setRequestData] = useState(null)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axiosInstance.get(
+                    "/api/customer/request",
+                    {
+                        headers:{
+                            'Authorization': 'Bearer ' + getToken()
+                        }
+                    }
+                );
+                console.log(response.data)
+                setRequestData(response.data)
+            } catch (error) {
+                if(error.status === 401 || error.status === 403){
+                    navigate('/login')
+                    console.log(error.status)
+                }
+            }
+        })();
+        
+    },[])
 
     function handleChange(event) {
         const { id, value } = event.target;
@@ -34,17 +53,16 @@ const CustomerDashboard = () => {
     return (
         <>
         <Container>
-            <Row className="mt-2">
+            <Row>
                 <textarea
-                    className="p-2"
                     id="query"
                     onChange={handleChange}
                     placeholder="Query"
                     value={query}
                 />
             </Row>
-            <Row className="mt-2 justify-content-between">
-                <Col className="p-0">
+            <Row>
+                <Col>
                     <select
                         id="priority"
                         onChange={handleChange}
@@ -57,7 +75,7 @@ const CustomerDashboard = () => {
                         <option value="severe">Severe</option>
                     </select>
                 </Col>
-                <Col className="d-flex justify-content-end p-0">
+                <Col>
                     <Button
                         id="request-button"
                     >
@@ -65,8 +83,14 @@ const CustomerDashboard = () => {
                     </Button>
                 </Col>
             </Row>
-            <Row className="mt-2">
-                <Requests requests={mockRequests} />
+            <Row>
+                {
+                    requestData != null 
+                    ?
+                    <Requests requests={requestData} />
+                    :
+                    <div>Loading</div>
+                }
             </Row>
         </Container>
         </>

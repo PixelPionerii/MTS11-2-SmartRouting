@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import axiosInstance from "../../api/axiosInstance";
 import { useNavigate } from "react-router";
+import { axiosInstance } from "../../api/axiosInstance";
 
 function Input({ changeFn, inputFor, value, error }) {
     const inputId = inputFor.toLowerCase().replace(" ", "-");

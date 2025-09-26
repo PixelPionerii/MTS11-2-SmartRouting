@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
-import axiosInstance from "../../api/axiosInstance";
 import Login from "../../components/login/Login";
+import { axiosInstance } from "../../api/axiosInstance";
 
 function AgentAdminLogin() {
     const loginRef = useRef(null);

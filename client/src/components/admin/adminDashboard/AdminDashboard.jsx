@@ -5,8 +5,6 @@ import AgentInspector from "../agentInspector/AgentInspector";
 import ConfigureRouting from "../configureRouting/ConfigureRouting";
 import Interactions from "../interactions/Interactions";
 
-import { mockRequests } from "../../customerDashboard/CustomerDashboard";
-
 function AdminDashboard() {
     const [activeView, setActiveView] = useState('interactions');
 
@@ -17,11 +15,11 @@ function AdminDashboard() {
             case 'agents':
                 return <AgentInspector />;
             case 'interactions':
-                return <Interactions requests={mockRequests} />;
+                return <Interactions />;
             case 'addEdit':
                 return <AddEditAgent />;
             default:
-                return <Interactions requests={mockRequests} />;
+                return <Interactions />;
         }
     }
 
