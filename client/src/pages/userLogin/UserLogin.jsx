@@ -26,6 +26,9 @@ function UserLogin() {
             );
 
             if (response.status === 200) {
+                const data = response.data;
+
+                localStorage.setItem("creds", JSON.stringify(data));
                 navigate("/");
             } else {
                 setFormError("Error logging in");

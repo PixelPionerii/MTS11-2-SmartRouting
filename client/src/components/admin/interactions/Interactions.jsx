@@ -1,7 +1,7 @@
 import React from "react";
-import Requests from "../requests/Requests";
+import Requests from "../../requests/Requests";
 
-function AdminDashboard({ requests }) {
+function Interactions({ requests }) {
     return (
         <>
         <Requests requests={requests} />
@@ -9,4 +9,4 @@ function AdminDashboard({ requests }) {
     );
 }
 
-export default AdminDashboard;
+export default Interactions;

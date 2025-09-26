@@ -1,0 +1,12 @@
+textarea {
+    border-radius: 6px;
+    field-sizing: content;
+    height: 150px;
+    resize: none !important;
+}
+
+#priority, #request-button {
+    border-radius: 6px;
+    height: 40px;
+    width: 150px;
+}

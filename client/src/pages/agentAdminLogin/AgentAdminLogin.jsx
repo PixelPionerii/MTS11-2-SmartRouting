@@ -26,6 +26,9 @@ function AgentAdminLogin() {
             );
 
             if (response.status === 200) {
+                const data = response.data;
+
+                localStorage.setItem("creds", JSON.stringify(data));
                 navigate("/dashboard");
             } else {
                 setFormError("Error logging in");
