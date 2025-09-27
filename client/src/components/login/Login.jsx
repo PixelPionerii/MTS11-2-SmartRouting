@@ -27,36 +27,36 @@ function Login(props, ref) {
         switch (id) {
             case "email":
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    setEmailData(prev => ({ 
-                        ...prev, 
+                    setEmailData(prev => ({
+                        ...prev,
                         value: value.trim(),
-                        error: "Invalid Email" 
+                        error: "Invalid Email"
                     }));
                 } else {
-                    setEmailData(prev => ({ 
-                        ...prev, 
+                    setEmailData(prev => ({
+                        ...prev,
                         value: value.trim(),
-                        error: "" 
+                        error: ""
                     }));
                 }
                 break;
-            
+
             case "password":
                 if (value.length < 8) {
-                    setPasswordData(prev => ({ 
-                        ...prev, 
+                    setPasswordData(prev => ({
+                        ...prev,
                         value: value.trim(),
-                        error: "Password must be at least 8 characters long" 
+                        error: "Password must be at least 8 characters long"
                     }));
                 } else {
-                    setPasswordData(prev => ({ 
-                        ...prev, 
+                    setPasswordData(prev => ({
+                        ...prev,
                         value: value.trim(),
-                        error: "" 
+                        error: ""
                     }));
                 }
                 break;
-            
+
             default:
                 return;
         }
@@ -64,31 +64,30 @@ function Login(props, ref) {
 
     return (
         <>
-        <form>
-            <div className="d-flex flex-column align-items-center">
-                <label id="label-login"></label>
-                
-                <input
-                    className="mt-2"
-                    id="email"
-                    type="email"
-                    onChange={handleChange}
-                    placeholder="Email"
-                    value={emailData.value}
-                />
-                {emailData.error && <span className="small text-danger">{emailData.error}</span>}
-                
-                <input
-                    className="mt-2"
-                    id="password"
-                    type="password"
-                    onChange={handleChange}
-                    placeholder="Password"
-                    value={passwordData.value}
-                />
-                {passwordData.error && <span className="small text-danger">{passwordData.error}</span>}
+            <div className="login">
+                <div className="login-field">
+                    <input
+                        className="login-input"
+                        id="email"
+                        type="email"
+                        onChange={handleChange}
+                        placeholder="Email"
+                        value={emailData.value}
+                    />
+                    {emailData.error && <span className="small text-danger">{emailData.error}</span>}
+                </div>
+                <div className="login-field">
+                    <input
+                        className="login-input"
+                        id="password"
+                        type="password"
+                        onChange={handleChange}
+                        placeholder="Password"
+                        value={passwordData.value}
+                    />
+                    {passwordData.error && <span className="small text-danger">{passwordData.error}</span>}
+                </div>
             </div>
-        </form>
         </>
     );
 }

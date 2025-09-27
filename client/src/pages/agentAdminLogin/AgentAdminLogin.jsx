@@ -8,8 +8,10 @@ function AgentAdminLogin() {
     const loginRef = useRef(null);
     const navigate = useNavigate();
     const [formError, setFormError] = useState("");
+    const [loading, setLoading] = useState(false)
 
     async function handleClick(event) {
+        setLoading(true)
         event.preventDefault();
         setFormError("");
 
@@ -36,24 +38,32 @@ function AgentAdminLogin() {
         } catch (error) {
             setFormError(error.response.data.error);
         }
+        setLoading(false)
     }
 
     return (
-        <>
-        <div className="d-flex flex-column align-items-center">
-            <p className="m-0">Admin Login</p>
-            <Link to='/login'>User Login</Link>
-            <Login ref={loginRef} />
-            {formError && <span className="small text-danger mt-2">{formError}</span>}
-            <Button
-                className="mt-2"
-                onClick={handleClick}
-                variant="primary"
-            >
-                Login
-            </Button>
+        <div className="user-login">
+            <div className="user-login-left"></div>
+            <form className="user-login-right">
+                <div className="user-login-header">
+                    <h5>Admin Login</h5>
+                    <Link to='/login'>User Login</Link>
+                </div>
+                <Login ref={loginRef} />
+                <div className="user-login-footer">
+                    <Button
+                        className="login-button"
+                        onClick={handleClick}
+                        variant="primary"
+                        type="submit"
+                        disabled={loading == true}
+                    >
+                        {loading ? 'Loading..' : 'Login'}
+                    </Button>
+                    {formError && <span className="small text-danger mt-2">{formError}</span>}
+                </div>
+            </form>
         </div>
-        </>
     );
 }
 

@@ -1,0 +1,57 @@
+.user-login{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.user-login-left{
+    background-image: url('https://a.storyblok.com/f/69069/1920x1280/414106f258/header-customercare.jpg/m/3840x0/filters:quality(75)');
+    background-size: cover;
+    width: 67%;
+}
+
+.user-login-right{
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+}
+
+.user-login-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+}
+
+.login{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.login-field{
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input{
+    padding: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: 7px;
+}
+
+.login-button{
+    width: 100%;
+}
+
+.user-login-footer{
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
