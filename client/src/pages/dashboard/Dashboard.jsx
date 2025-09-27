@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
-import AdminDashboard from "../../components/admin/adminDashboard/AdminDashboard";
+import AdminDashboard from "../../components/adminDashboard/AdminDashboard";
 import AgentDashboard from "../../components/agentDashboard/AgentDashboard";
 import CustomerDashboard from "../../components/customerDashboard/CustomerDashboard";
 import { useNavigate } from "react-router";

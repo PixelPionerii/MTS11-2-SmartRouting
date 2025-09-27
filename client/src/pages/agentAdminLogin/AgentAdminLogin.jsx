@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import Login from "../../components/login/Login";
 import { axiosInstance } from "../../api/axiosInstance";
@@ -42,6 +42,7 @@ function AgentAdminLogin() {
         <>
         <div className="d-flex flex-column align-items-center">
             <p className="m-0">Admin Login</p>
+            <Link to='/login'>User Login</Link>
             <Login ref={loginRef} />
             {formError && <span className="small text-danger mt-2">{formError}</span>}
             <Button

@@ -49,7 +49,7 @@ router.post('/customer/login', async (req, res) => {
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign({ userId: customer.id, role: 'customer' }, JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, role: 'customer' });
+    res.json({ token, role: 'customer', name: customer.name });
   } catch (err) {
     res.status(500).json({ error: 'Login failed' });
   }
@@ -76,7 +76,7 @@ router.post('/agent/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.json({ token , role });
+    res.json({ token, role, name: agent.name });
   } catch (err) {
     res.status(500).json({ error: 'Login failed' });
   }

@@ -95,16 +95,28 @@ router.put('/request/close', verifyJWT('admin'), async (req, res) => {
     }
 });
 
+router.get('/getAvailability', verifyJWT('admin'), async (req, res) => {
+    try {
+        const agent = await prisma.agent.findUnique({
+            where: { id: req.user.userId }
+        });
+        res.json({status: agent.availability})
+    } catch (error) {
+        console.error('failed:', err);
+        res.status(500).json({ error: 'Failed to get agent availability status' });
+    }
+})
+
 router.put('/setAvailability', verifyJWT('admin'), async (req, res) => {
     const { availability } = req.body; // destructure both from body
     try {
-        await prisma.agent.update({
+        const agent = await prisma.agent.update({
             where: { id: req.user.userId },
             data: {
                 availability: availability
             },
         });
-        res.json({ message: "agent availability status updated" })
+        res.json({ message: "agent availability status updated", status: agent.availability })
     } catch (error) {
         console.error('failed:', err);
         res.status(500).json({ error: 'Failed to update agent availability status' });
