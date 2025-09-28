@@ -8,13 +8,13 @@ COPY package*.json yarn.lock ./
 
 
 # Install dependencies
-RUN yarn
+RUN npm install
 
 # Copy the rest of your app's source code
 COPY . .
 
 # Build your app
-RUN yarn build
+RUN npm run build
 
 # Step 2: Serve the app using Nginx
 FROM nginx:alpine
