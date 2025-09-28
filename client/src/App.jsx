@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AgentAdminLogin from "./pages/agentAdminLogin/AgentAdminLogin";
 import Dashboard from "./pages/dashboard/Dashboard";
-import Home from "./pages/home/Home";
+import Home from "./pages/Home/Home";
 import SignUp from "./pages/signup/SignUp";
 import UserLogin from "./pages/userLogin/UserLogin";
 
