@@ -1,30 +1,30 @@
-# Stage 1: Build the React app
-FROM node:18-alpine as build
- 
+# Step 1: Build the React app
+FROM node:20 as vite-build
+
 WORKDIR /app
- 
-# Copy package.json and package-lock.json
-COPY package*.json ./
- 
-# Clean install for production builds
-RUN npm install -g npm@11.6.1
-# Copy all source code
+
+# Copy package.json and package-lock.json (or yarn.lock) files
+COPY package*.json yarn.lock ./
+
+
+# Install dependencies
+RUN yarn
+
+# Copy the rest of your app's source code
 COPY . .
- 
-# Build the React app for production (creates dist folder)
-RUN npm run build
- 
-# Stage 2: Serve the built app with Nginx
+
+# Build your app
+RUN yarn build
+
+# Step 2: Serve the app using Nginx
 FROM nginx:alpine
- 
-# Copy the DIST output to Nginx html folder
-COPY --from=build /app/dist /usr/share/nginx/html
- 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
- 
-# Expose port 80 to serve the app
-EXPOSE 80
- 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
+
+COPY --from=vite-build /app/dist /usr/share/nginx/html
+
+# Expose port 8080 to the Docker host, so we can access it 
+# from the outside. This is a placeholder; Cloud Run will provide the PORT environment variable at runtime.
+ENV PORT 8080
+ENV HOST 0.0.0.0
+EXPOSE 8080
+CMD sh -c "envsubst '\$PORT' < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
