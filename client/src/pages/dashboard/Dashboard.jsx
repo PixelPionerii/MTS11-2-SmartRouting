@@ -4,6 +4,7 @@ import AdminDashboard from "../../components/adminDashboard/AdminDashboard";
 import AgentDashboard from "../../components/agentDashboard/AgentDashboard";
 import CustomerDashboard from "../../components/customerDashboard/CustomerDashboard";
 import { useNavigate } from "react-router";
+import './Dashboard.css'
 
 
 function GetDashboard() {

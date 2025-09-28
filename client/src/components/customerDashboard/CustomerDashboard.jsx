@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Spinner } from "react-bootstrap";
 import Requests from "../../components/requests/Requests";
 import { axiosInstance, getToken } from "../../api/axiosInstance";
 
@@ -13,6 +13,7 @@ const CustomerDashboard = () => {
     const [requestData, setRequestData] = useState(null)
     const [requestCreateLoading, setRequestCreateLoading] = useState(false)
     const [requestCreateResponse, setRequestCreateResponse] = useState("Finding an appropriate agent")
+    const [validationError, setValidationError] = useState("")
 
     useEffect(() => {
         (async () => {
@@ -84,49 +85,52 @@ const CustomerDashboard = () => {
                 }
             }
         }
+        else{
+            setValidationError("Fill all the fields")
+        }
     }
 
     return (
         <>
             <Container>
-                <div className="d-flex justify-content-end my-2">
-                    <div>{JSON.parse(localStorage.getItem('creds'))?.name}</div>
-                    <Button onClick={() => { localStorage.removeItem('creds'); navigate('/') }}>
-                        Logout
-                    </Button>
-                </div>
-                <Row>
-                    <textarea
-                        id="query"
-                        onChange={handleChange}
-                        placeholder="Query"
-                        value={query}
-                    />
-                </Row>
-                <Row>
-                    <Col>
-                        <select
-                            id="priority"
-                            onChange={handleChange}
-                            value={priority}
-                        >
-                            <option value="">Priority</option>
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                            <option value="severe">Severe</option>
-                        </select>
-                    </Col>
-                    <Col>
-                        <Button
-                            id="request-button"
-                            onClick={createRequest}
-                        >
-                            Create Requsest
+                <div className="nav">
+                    <h5 className="nav-titile">Customer Dashboard</h5>
+                    <div className="nav-options">
+                        <h6 className="nav-user-name">Hello {JSON.parse(localStorage.getItem('creds'))?.name}</h6>
+                        <Button onClick={() => { localStorage.removeItem('creds'); navigate('/') }}>
+                            Logout
                         </Button>
-                    </Col>
-                </Row>
-                <Row>
+                    </div>
+                </div>
+                <textarea
+                    id="query"
+                    onChange={handleChange}
+                    placeholder="Query"
+                    value={query}
+                />
+
+                <div className="query-footer">
+                    <select
+                        id="priority"
+                        onChange={handleChange}
+                        value={priority}
+                    >
+                        <option value="">Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="severe">Severe</option>
+                    </select>
+                    <Button
+                        id="request-button"
+                        onClick={createRequest}
+                    >
+                        Create Requsest
+                    </Button>
+                    {validationError && <span className="small text-danger mt-2">{validationError}</span>}
+                </div>
+
+                <div>
                     {
                         requestData != null
                             ?
@@ -134,13 +138,16 @@ const CustomerDashboard = () => {
                             :
                             <div>Loading</div>
                     }
-                </Row>
+                </div>
+
                 {requestCreateLoading &&
-                    <div style={{ position: 'absolute', width: '100vw', height: '100vh', background: 'white', left: 0, top: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                    <div className="request-create-loading">
                         {requestCreateResponse}
                         {
-                            requestCreateResponse != "Finding an appropriate agent" &&
-                            <Button onClick={() => { window.location.reload() }}>Close</Button>
+                            requestCreateResponse != "Finding an appropriate agent" ?
+                            <Button className="request-create-close" onClick={() => { window.location.reload() }}>Close</Button>
+                            :
+                            <Spinner></Spinner>
                         }
                     </div>
                 }

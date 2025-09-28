@@ -1,13 +1,9 @@
 import axios from "axios";
-import { useNavigate } from "react-router";
 
-async function getConfig() {
-    const prodUrl = "https://api.pixel.pioneers.smartrouting.com";
-    const currentUrl = window.location.origin;
-  
-    if (currentUrl === prodUrl) {
+async function getConfig() {  
+    if (window.location.protocol === 'https:') {
         return {
-            backendApiUrl: 'https://pixel.pioneers.smartrouting.com',
+            backendApiUrl: 'https://mts11-2-smartrouting-180339305375.us-central1.run.app',
         }
     } else {
         try {

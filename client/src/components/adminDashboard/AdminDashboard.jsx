@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 import { axiosInstance, getToken } from "../../api/axiosInstance";
 
 function AdminDashboard() {
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState('....');
     const [activeView, setActiveView] = useState('interactions');
     const navigate = useNavigate()
 
@@ -28,18 +28,19 @@ function AdminDashboard() {
     }
 
     async function handleStatusClick() {
+        setStatus('....')
         try {
             const response = await axiosInstance.put(
                 "/api/admin/setAvailability",
-                { availability: !status },
+                { availability: !(status == 'online') },
                 {
                     headers: {
                         'Authorization': 'Bearer ' + getToken()
                     }
                 }
             );
-            console.log(response.data)
-            setStatus(response.data.status)
+            console.log(response.data.status)
+            setStatus(response.data.status == true ? 'online' : 'offline')
         } catch (error) {
             if (error.status === 401 || error.status === 403) {
                 navigate('/login')
@@ -60,7 +61,7 @@ function AdminDashboard() {
                     }
                 );
                 console.log(response.data)
-                setStatus(response.data.status)
+                setStatus(response.data.status ? 'online' : 'offline')
             } catch (error) {
                 if (error.status === 401 || error.status === 403) {
                     navigate('/login')
@@ -73,23 +74,15 @@ function AdminDashboard() {
     return (
         <>
             <Container>
-                <Row>
-                    <Col className="d-flex justify-content-between p-0 my-3">
-                        <div>{JSON.parse(localStorage.getItem('creds'))?.name}</div>
+                <div className="nav">
+                    <h5 className="nav-title">Admin Dashboard</h5>
+                    <div className="nav-options">
+                        <h6 className="nav-user-name">Hello {JSON.parse(localStorage.getItem('creds'))?.name}</h6>
                         <Button
-                            className="mx-1"
-                            onClick={handleStatusClick}
+                            variant={activeView === 'interactions' ? 'primary' : 'outline-primary'}
+                            onClick={() => setActiveView('interactions')}
                         >
-                            {status ? 'Online' : 'Offline'}
-                        </Button>
-                        <Button onClick={() => { localStorage.removeItem('creds'); navigate('/') }}>
-                            Logout
-                        </Button>
-                        <Button
-                            variant={activeView === 'routing' ? 'primary' : 'outline-primary'}
-                            onClick={() => setActiveView('routing')}
-                        >
-                            Configure Routing
+                            Interactions
                         </Button>
                         <Button
                             variant={activeView === 'agents' ? 'primary' : 'outline-primary'}
@@ -98,19 +91,28 @@ function AdminDashboard() {
                             Active agents
                         </Button>
                         <Button
-                            variant={activeView === 'interactions' ? 'primary' : 'outline-primary'}
-                            onClick={() => setActiveView('interactions')}
-                        >
-                            Interactions
-                        </Button>
-                        <Button
                             variant={activeView === 'addEdit' ? 'primary' : 'outline-primary'}
                             onClick={() => setActiveView('addEdit')}
                         >
                             Add/Edit agent
                         </Button>
-                    </Col>
-                </Row>
+                        <Button
+                            variant={activeView === 'routing' ? 'primary' : 'outline-primary'}
+                            onClick={() => setActiveView('routing')}
+                        >
+                            Configure Routing
+                        </Button>
+                        <button
+                            className={`status-button  status-button-${status}`}
+                            onClick={handleStatusClick}
+                        >
+                            {status}
+                        </button>
+                        <Button onClick={() => { localStorage.removeItem('creds'); navigate('/') }}>
+                            Logout
+                        </Button>
+                    </div>
+                </div>
                 <Row>
                     {renderAdminComponent()}
                 </Row>

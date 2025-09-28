@@ -222,9 +222,11 @@ function SignUp() {
                         onChange={handleChange}
                         value={formData.language}
                     >
-                        <option value="en">English</option>
-                        <option value="hi">Hindi</option>
-                        <option value="fr">French</option>
+                        <option value="Tamil">Tamil</option>
+                        <option value="Marathi">Marathi</option>
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi</option>
+                        <option value="French">French</option>
                     </select>
                     <Input
                         inputFor="Password"
