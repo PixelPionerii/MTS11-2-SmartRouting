@@ -1,6 +1,6 @@
 textarea {
     border-radius: 6px;
     field-sizing: content;
-    height: 150px;
+    height: 200px;
     resize: none !important;
 }
