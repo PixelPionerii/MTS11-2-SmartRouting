@@ -24,6 +24,10 @@ COPY prisma ./prisma/
  
 # Generate Prisma client (now that schema.prisma exists)
 
+RUN npx prisma migrate reset
+
+RUN npx prisma migrate dev --name "prod"
+
 RUN npx prisma generate
  
 # Copy the rest of the application code
