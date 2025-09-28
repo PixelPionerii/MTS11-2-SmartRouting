@@ -4,7 +4,7 @@ FROM node:20 as vite-build
 WORKDIR /app
 
 # Copy package.json and package-lock.json (or yarn.lock) files
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 
 
 # Install dependencies
