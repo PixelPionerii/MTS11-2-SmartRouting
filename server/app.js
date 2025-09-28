@@ -16,10 +16,11 @@ app.use('/api/customer', customerRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/api/admin', adminRoutes);
 
-app.get('/',(req,res) => {
+app.get('/', (req, res) => {
     res.send("Hello world")
 })
 
 console.log('Credentials loaded:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
-app.listen(3000,() => console.log("server started http://localhost:3000"))
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => { console.log(`Server started on port ${PORT}`); });
