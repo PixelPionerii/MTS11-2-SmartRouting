@@ -6,21 +6,23 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
  
-# Clear npm cache and install dependencies
-RUN npm cache clean --force
-RUN npm install --production --silent
+# Clean install for production builds
+RUN npm ci --only=production --silent
  
 # Copy all source code
 COPY . .
  
-# Build the React app for production
+# Build the React app for production (creates dist folder)
 RUN npm run build
  
 # Stage 2: Serve the built app with Nginx
 FROM nginx:alpine
  
-# Copy the build output to Nginx html folder
-COPY --from=build /app/build /usr/share/nginx/html
+# Copy the DIST output to Nginx html folder
+COPY --from=build /app/dist /usr/share/nginx/html
+ 
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
  
 # Expose port 80 to serve the app
 EXPOSE 80
