@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
  
 # Clean install for production builds
-RUN npm install
+RUN npm install -g npm@11.6.1
 # Copy all source code
 COPY . .
  
